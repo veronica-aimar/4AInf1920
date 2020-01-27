@@ -1,0 +1,14 @@
+<libreria>
+    <album>
+        <idAlbum>cod1</idAlbum>
+        <nomeAlbum>Album</nomeAlbum>
+    </album>
+    <album>
+        <idAlbum>cod78</idAlbum>
+        <nomeAlbum>Album2</nomeAlbum>
+    </album>
+    <album>
+        <idAlbum>cod9</idAlbum>
+        <nomeAlbum>Album3</nomeAlbum>
+    </album>
+</libreria>
