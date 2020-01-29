@@ -1,0 +1,14 @@
+<album>
+    <brani>
+        <idBrano>cod12</idBrano>
+        <durata>3.50</durata>
+        <artista>Morandi</artista>
+        <nomeBrano>uno su mille</nomeBrano>
+    </brani>
+    <brani>
+        <idBrano>cod8</idBrano>
+        <durata>3.10</durata>
+        <artista>Salmo</artista>
+        <nomeBrano>90 min</nomeBrano>
+    </brani>
+</album>
