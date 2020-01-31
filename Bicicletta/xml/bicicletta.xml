@@ -1,0 +1,13 @@
+<bicicletta>
+	<telaio>Atala</telaio>
+	<freno>Shimano</freno>
+	<cambio>Campagnolo</cambio>
+	<ruote>
+		<ruota>Anteriore</ruota>
+		<ruota>Posteriore</ruota>
+	</ruote>
+	<ruote>
+		<ruota>Anteriore</ruota>
+		<ruota>Posteriore</ruota>
+	</ruote>
+</bicicletta>
