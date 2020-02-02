@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<alto>
+    <lCamere>
+        <bagno>si</bagno>
+        <letto>2</letto>
+        <mare>mare</mare>
+    </lCamere>
+    <lCamere>
+        <bagno>si</bagno>
+        <letto>1</letto>
+        <mare>mare</mare>
+    </lCamere>
+    <lCamere>
+        <bagno>no</bagno>
+        <letto>3</letto>
+        <mare>città</mare>
+    </lCamere>
+</alto>
