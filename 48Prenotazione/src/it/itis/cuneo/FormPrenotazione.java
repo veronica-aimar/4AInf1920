@@ -12,7 +12,6 @@ import javax.swing.*;
 
 
 public class FormPrenotazione extends  JFrame implements ActionListener {
-
     JButton bottoneOk;
     JButton bottoneDelete;
     JButton bottoneSalva;
@@ -54,7 +53,7 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
         super();
         this.prenotazioni = new ArrayList<Prenotazione>();
         i = 0;
-        setSize(450,200);
+        setSize(600,200);
         setTitle("Prenota il tuo biglietto!");
         initComponets();
         //pack();
@@ -110,14 +109,14 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
         bottoneDelete = new JButton("Annulla");
         bottoneStampa = new JButton("Stampa");
         bottoneSalva = new JButton("Salva");
-        bottoneAvanti = new JButton("Avanti");
         bottoneIndietro = new JButton("Indietro");
+        bottoneAvanti = new JButton("Avanti");
         pannelloBasso.add(bottoneOk);
         pannelloBasso.add(bottoneDelete);
         pannelloBasso.add(bottoneStampa);
         pannelloBasso.add(bottoneSalva);
-        pannelloBasso.add(bottoneAvanti);
         pannelloBasso.add(bottoneIndietro);
+        pannelloBasso.add(bottoneAvanti);
 
         container.add(pannelloDati, BorderLayout.CENTER);
         container.add(pannelloBasso, BorderLayout.SOUTH);
