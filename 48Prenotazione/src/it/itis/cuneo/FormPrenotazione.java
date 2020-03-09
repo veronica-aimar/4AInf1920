@@ -1,11 +1,14 @@
 package it.itis.cuneo;
 
+import sun.util.resources.CalendarData;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 
 public class FormPrenotazione extends  JFrame implements ActionListener {
@@ -14,6 +17,8 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
     JButton bottoneDelete;
     JButton bottoneSalva;
     JButton bottoneStampa;
+    JButton bottoneAvanti;
+    JButton bottoneIndietro;
 
     JTextField cNome;
     JTextField cCognome;
@@ -29,35 +34,32 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
     JLabel tDestinazione;
     JLabel tData;
 
-    private Prenotazione[] aPrenotazoni;
+    private List<Prenotazione> prenotazioni;
     private int i;
 
     public static final String PATH_NAME = "H:\\triennio\\quarta_ainf\\informatica\\intelliJ\\48Prenotazione\\src\\it\\itis\\cuneo\\prenotazione.csv";
     public static final String SEPARATOR = ",";
 
 
-    public void setPrenotazioni(Prenotazione[] aPrenotazoni) {
-        this.aPrenotazoni = aPrenotazoni;
+    public void setPrenotazioni(List<Prenotazione> prenotazioni) {
+        this.prenotazioni = prenotazioni;
+        this.i = 0;
     }
-    public void setIndice(int indice) {
-        this.i = indice;
+    public List<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
     }
-    public int getIndice() {
-        return this.i;
-    }
-
 
     public FormPrenotazione()
     {
         super();
-        setSize(400,300);
+        this.prenotazioni = new ArrayList<Prenotazione>();
+        i = 0;
+        setSize(450,200);
         setTitle("Prenota il tuo biglietto!");
         initComponets();
         //pack();
         setVisible(true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        aPrenotazoni = new Prenotazione[10];
-        i = 0;
     }
 
 
@@ -108,10 +110,14 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
         bottoneDelete = new JButton("Annulla");
         bottoneStampa = new JButton("Stampa");
         bottoneSalva = new JButton("Salva");
+        bottoneAvanti = new JButton("Avanti");
+        bottoneIndietro = new JButton("Indietro");
         pannelloBasso.add(bottoneOk);
         pannelloBasso.add(bottoneDelete);
         pannelloBasso.add(bottoneStampa);
         pannelloBasso.add(bottoneSalva);
+        pannelloBasso.add(bottoneAvanti);
+        pannelloBasso.add(bottoneIndietro);
 
         container.add(pannelloDati, BorderLayout.CENTER);
         container.add(pannelloBasso, BorderLayout.SOUTH);
@@ -120,6 +126,8 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
         bottoneDelete.addActionListener(this);
         bottoneStampa.addActionListener(this);
         bottoneSalva.addActionListener(this);
+        bottoneAvanti.addActionListener(this);
+        bottoneIndietro.addActionListener(this);
     }
 
 
@@ -128,6 +136,7 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
         if (ae.getSource() == bottoneOk) {
             richiestaPrenotazione();
             JOptionPane.showMessageDialog(null, "La prenotazione si è conclusa con successo");
+            azzeramentoCampiTesto();
         }
         //ANNULLAMENTO PRENOTAZIONE
         if (ae.getSource() == bottoneDelete) {
@@ -139,18 +148,26 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
             richiestaPrenotazione();
             scriviCSV();
             JOptionPane.showMessageDialog(null, "Salvataggio avvenuto con successo");
+            azzeramentoCampiTesto();
         }
         //VISUALIZZAZIONE PRENOTAZIONE
         if (ae.getSource() == bottoneStampa) {
             //finestra di dialogo per stampare la prenotazione
             Prenotazione prenotazione = new Prenotazione(cNome.getText(), cCognome.getText(), cTelefono.getText(), cPartenza.getText(), cDestinazione.getText(), cData.getText());
             JOptionPane.showMessageDialog(null, prenotazione.stampaPrenotazione());
+            azzeramentoCampiTesto();
+        }
+        if(ae.getSource() == bottoneAvanti) {
+            mostraElemento(1);
+        }
+        if(ae.getSource() == bottoneIndietro) {
+            mostraElemento(-1);
         }
     }
 
     public void richiestaPrenotazione() {
         Prenotazione prenotazione = new Prenotazione(cNome.getText(), cCognome.getText(), cTelefono.getText(), cPartenza.getText(), cDestinazione.getText(), cData.getText());
-        aPrenotazoni[i] = prenotazione;
+        prenotazioni.add(prenotazione);
         i++;
     }
 
@@ -163,21 +180,42 @@ public class FormPrenotazione extends  JFrame implements ActionListener {
         cData.setText("");
     }
 
+    public void mostraElemento(int spiazzamento) {
+        i += spiazzamento;
+
+        if(i == prenotazioni.size()) {
+            azzeramentoCampiTesto();
+        }
+        else if(i > -1 && i < prenotazioni.size()) {
+            cNome.setText(prenotazioni.get(i).getNome());
+            cCognome.setText(prenotazioni.get(i).getCognome());
+            cTelefono.setText(prenotazioni.get(i).getTelefono());
+            cPartenza.setText(prenotazioni.get(i).getPartenza());
+            cDestinazione.setText(prenotazioni.get(i).getDestinazione());
+            cData.setText(prenotazioni.get(i).getData());
+        } else {
+            JOptionPane.showMessageDialog(null, "Non sono stati inserite altre prenotazioni");
+        }
+    }
+
     public void scriviCSV() {
-        File file = new File(PATH_NAME);
         BufferedWriter bw = null;
+        String csv = "";
+        try {
+            bw = new BufferedWriter(new FileWriter(PATH_NAME));
+            for (Prenotazione prenotazione : prenotazioni) {
+                csv += prenotazione.toRowCSV();
+            }
+            bw.write(csv);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
-                bw = new BufferedWriter(new FileWriter(PATH_NAME));
-                bw.write(aPrenotazoni[i-1].toRowCSV());
+                bw.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    bw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
+        }
     }
 
     public static void main(String[] args)
